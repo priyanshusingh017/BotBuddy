@@ -23,14 +23,16 @@ window.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', toggleDarkMode);
   }
 
-  // --- User menu logic (optional, if you have it) ---
-  // ...your user menu code here...
-
   // --- Chat logic for Gemini API ---
   const chatForm = document.getElementById('chat-form');
   const chatWindow = document.getElementById('chat-window');
   const userInput = document.getElementById('user-input');
   const attachBtn = document.querySelector('.attach-btn');
+
+  if (!chatForm || !chatWindow || !userInput || !attachBtn) {
+    console.error("Required chat elements not found in DOM.");
+    return;
+  }
 
   // Add a hidden file input for attachments
   let fileInput = document.createElement('input');
@@ -46,7 +48,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   fileInput.addEventListener('change', () => {
     const file = fileInput.files[0];
-    if (!file) return;
+    if (!file) {
+      attachBtn.innerHTML = '<span>📎</span>';
+      attachedFile = null;
+      return;
+    }
     let reader = new FileReader();
     reader.onload = (e) => {
       let base64string = e.target.result.split(",")[1];
@@ -59,8 +65,9 @@ window.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   });
 
-  // Use your backend endpoint
+  // Use your backend endpoint (change for deployment)
   const Api_Url = "http://localhost:3000/api/chat";
+  // For deployment, use: const Api_Url = "https://your-backend.onrender.com/api/chat";
 
   chatForm.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -107,7 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
       loadingDiv.scrollIntoView({ behavior: "smooth" });
     } catch (error) {
       loadingDiv.querySelector('.message-text').innerHTML = "There was an error. Please try again.";
-      console.error("Fetch error:", error); // Improved error logging
+      console.error("Fetch error:", error);
     } finally {
       userInput.disabled = false;
       userInput.focus();
