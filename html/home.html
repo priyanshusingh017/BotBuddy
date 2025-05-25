@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatBot - Home</title>
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <img src="/assest/bot.png" alt="ChatBot Logo" class="logo" />
+      <span class="app-title">ChatBot</span>
+    </div>
+    <div class="header-right">
+      <nav aria-label="Main navigation">
+        <a href="home.html" aria-current="page">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode" title="Switch to dark mode">🌙</button>
+      <img src="/assest/user.png" alt="User menu" class="user-avatar-header" id="user-avatar" tabindex="0" aria-haspopup="true" aria-expanded="false" />
+      <div class="user-menu" id="user-menu" style="display:none; position:absolute; right:20px; top:60px; background:#fff; border:1px solid #ccc; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000;">
+        <button id="logout-btn" style="background:none; border:none; padding:10px 20px; width:100%; text-align:left; cursor:pointer;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="chat-intro">
+      <h1>Welcome to ChatBot Home</h1>
+      <p>Your personal assistant for reminders, fun facts, and more. Start chatting now!</p>
+      <a href="index.html" class="send-btn" aria-label="Start chatting with your bot">Start Chatting</a>
+    </section>
+  </main>
+
+  <footer style="text-align:center; color:var(--secondary-text); padding:1rem 0;">
+    &copy; 2025 ChatBot. All rights reserved.
+  </footer>
+  <script src="/js/home.js"></script>
+</body>
+</html>
