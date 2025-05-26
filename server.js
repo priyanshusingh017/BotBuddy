@@ -2,6 +2,8 @@ import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 dotenv.config();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -11,6 +13,18 @@ console.log("Current working directory:", process.cwd());
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// These two lines are needed for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the root (adjust if needed)
+app.use(express.static(path.join(__dirname, '..')));
+
+// Optionally, serve index.html for the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../html/index.html'));
+});
 
 // Defensive: Warn if API key is missing
 if (!GEMINI_API_KEY) {

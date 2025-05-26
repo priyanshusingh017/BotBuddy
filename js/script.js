@@ -66,8 +66,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // Use your backend endpoint (change for deployment)
-  const Api_Url = "http://localhost:3000/api/chat";
-  // For deployment, use: const Api_Url = "https://your-backend.onrender.com/api/chat";
+  const Api_Url = "https://your-backend.onrender.com/api/chat";
 
   chatForm.addEventListener('submit', async function(e) {
     e.preventDefault();
