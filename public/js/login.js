@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('login-password').value;
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          window.location.href = 'home.html';
+          // UPDATED redirect path
+          window.location.href = 'html/home.html';
         })
         .catch(error => {
           showFormMessage(loginForm, 'Login failed: ' + error.message, true);
@@ -84,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       try {
         await signInWithPopup(auth, googleProvider);
-        window.location.href = 'home.html';
+        // UPDATED redirect path
+        window.location.href = 'html/home.html';
       } catch (error) {
         const form = document.querySelector('.sign-in-container form') || document.querySelector('.sign-up-container form');
         if (form) {
