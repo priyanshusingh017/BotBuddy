@@ -27,12 +27,12 @@ app.use(express.json()); // Parse JSON requests
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files from the project root (so /html, /css, /assest work)
-app.use(express.static(path.join(__dirname, '..')));
+// Serve static files (e.g., HTML, CSS, assets)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve login.html as the root page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../html/login.html'));
+  res.sendFile(path.join(__dirname, 'public/html/login.html'));
 });
 
 // Extract Gemini API response content
