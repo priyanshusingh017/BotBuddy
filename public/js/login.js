@@ -9,7 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
+  apiKey: "AIzaSyDe18gD6SF4iZSgGmKxNZNdNBZhlkrTfUg",
   authDomain: "chatbot-43b76.firebaseapp.com",
   projectId: "chatbot-43b76",
   storageBucket: "chatbot-43b76.appspot.com",
