@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   });
 
-  const Api_Url = 'https://your-backend.onrender.com/api/chat';
+  const Api_Url = '/api/chat';
 
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
