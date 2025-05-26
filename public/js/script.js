@@ -69,7 +69,10 @@ window.addEventListener('DOMContentLoaded', () => {
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = userInput.value.trim();
-    if (!message) return;
+    if (!message) {
+      alert("Message cannot be empty!");
+      return;
+    }
 
     appendMessage('user', message, attachedFile);
 
@@ -89,7 +92,8 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
+        const errorDetails = await response.json();
+        throw new Error(`HTTP ${response.status}: ${errorDetails.error || 'Unknown error'}`);
       }
 
       const data = await response.json();
@@ -97,7 +101,7 @@ window.addEventListener('DOMContentLoaded', () => {
       loadingDiv.querySelector('.message-text').innerHTML = formatReply(botReply);
     } catch (error) {
       loadingDiv.querySelector('.message-text').innerHTML = 'There was an error. Please try again.';
-      console.error('Fetch error:', error);
+      console.error('Error during fetch:', error);
     } finally {
       userInput.disabled = false;
       userInput.focus();
