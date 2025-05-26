@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     // Show loading message
-    const loadingDiv = appendMessage('bot', '<span class="message-text"><img src="/assest/loading.webp" alt="Loading..." width="30"></span>');
+    const loadingDiv = appendMessage('bot', '<span class="message-text"><img src="/assets/loading.webp" alt="Loading..." width="30"></span>');
 
     try {
       let response = await fetch(Api_Url, RequestOption);
@@ -130,10 +130,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Add avatar image based on sender
     if (sender === 'user') {
-      html += `<img src="/public/asseset/R.jpg" alt="User avatar smiling with a friendly expression, neutral background, no visible text, positive and welcoming tone" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
+      html += `<img src="/assets/R.jpg" alt="User avatar smiling with a friendly expression, neutral background, no visible text, positive and welcoming tone" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
       html += `<span class="message-text">${escapeHtml(text)}</span>`;
     } else if (sender === 'bot') {
-      html += `<img src="/public/assest/OIP.jpg" alt="Friendly chatbot avatar with a smiling face in a digital interface, neutral background, no visible text" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
+      html += `<img src="/assets/OIP.jpg" alt="Friendly chatbot avatar with a smiling face in a digital interface, neutral background, no visible text" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
       html += `<span class="message-text"></span>`;
     }
 
