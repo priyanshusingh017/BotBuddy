@@ -1,6 +1,6 @@
-# Chatbot Backend with Gemini API
+# BotBuddy 🤖
 
-This project is a Node.js Express backend that integrates with Google's Gemini API for generating chatbot responses. It supports text messages and file-based inputs, making it ideal for interactive chatbot applications.
+BotBuddy is a Node.js-based chatbot application featuring a web interface for seamless user interaction.
 
 ---
 
