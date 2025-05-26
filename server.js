@@ -1,34 +1,47 @@
+// server.js
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import morgan from 'morgan';
 
 // Load environment variables
 dotenv.config();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-console.log("GEMINI_API_KEY:", GEMINI_API_KEY ? "Loaded" : "Missing");
-console.log("Current working directory:", process.cwd());
-
 if (!GEMINI_API_KEY) {
   console.error("❌ GEMINI_API_KEY is missing in environment variables.");
-  process.exit(1); // Exit the process if API key is missing
+  process.exit(1);
 }
 
 const app = express();
 
 // Middleware
-app.use(cors()); // Allow cross-origin requests
-app.use(express.json()); // Parse JSON requests
+app.use(cors({
+  origin: (origin, callback) => {
+    const allowedOrigins = ['http://localhost:3000', 'https://botbuddy-aadn.onrender.com'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+app.use(express.json());
+app.use(morgan('dev'));
 
 // Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files (e.g., HTML, CSS, assets)
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use('/html', express.static(path.join(__dirname, 'public/html')));
+app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
+app.use('/favicon.ico', express.static(path.join(__dirname, 'public/assets/favicon.ico')));
 
 // Serve login.html as the root page
 app.get('/', (req, res) => {
@@ -52,25 +65,21 @@ function extractBotReply(data) {
 app.post('/api/chat', async (req, res) => {
   const { message, file } = req.body;
 
-  // Validate user message
   if (!message || typeof message !== 'string') {
     return res.status(400).json({ error: 'Invalid or missing message.' });
   }
 
-  // Validate file if provided
   if (file && (!file.data || !file.mime_type)) {
     return res.status(400).json({ error: 'Invalid file structure.' });
   }
 
   try {
-    // Prepare Gemini API request body
     const parts = [{ text: message }];
     if (file?.data && file?.mime_type) {
       parts.push({ inline_data: file });
     }
     const requestBody = { contents: [{ parts }] };
 
-    // Send request to Gemini API
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
@@ -98,6 +107,11 @@ app.post('/api/chat', async (req, res) => {
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: "ok" });
+});
+
+// Handle 404 errors
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'public', 'html', '404.html'));
 });
 
 // Start the server

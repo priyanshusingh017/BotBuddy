@@ -1,3 +1,4 @@
+// public/js/login.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { 
   getAuth, 
@@ -8,7 +9,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDe18gD6SF4iZSgGmKxNZNdNBZhlkrTfUg",
+  apiKey: "YOUR_FIREBASE_API_KEY",
   authDomain: "chatbot-43b76.firebaseapp.com",
   projectId: "chatbot-43b76",
   storageBucket: "chatbot-43b76.appspot.com",
@@ -25,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
   const logoutMsg = document.getElementById('logout-message');
 
-  // Toggle sign in / sign up panels
   if (signUpButton && container) {
     signUpButton.addEventListener('click', () => {
       container.classList.add('right-panel-active');
@@ -38,13 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Show logout message if redirected after logout
   if (window.location.search.includes('logout=1') && logoutMsg) {
     logoutMsg.style.display = 'block';
     setTimeout(() => logoutMsg.style.display = 'none', 3500);
   }
 
-  // Login form submit handler
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', e => {
@@ -61,9 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Register form submit handler
   const registerForm = document.getElementById('register-form');
-  if (registerForm && container) {
+  if (registerForm) {
     registerForm.addEventListener('submit', e => {
       e.preventDefault();
       const email = document.getElementById('register-email').value.trim();
@@ -81,13 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Google login popup - must be triggered by direct user action
   const googleProvider = new GoogleAuthProvider();
   document.querySelectorAll('.social[aria-label*="Google"]').forEach(btn => {
     btn.addEventListener('click', async e => {
       e.preventDefault();
       try {
-        // This must be called directly inside the click handler to avoid popup blockers
         await signInWithPopup(auth, googleProvider);
         window.location.href = 'home.html';
       } catch (error) {
@@ -101,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Utility to show messages inside forms
   function showFormMessage(form, message, isError) {
     let msg = form.querySelector('.form-message');
     if (!msg) {
