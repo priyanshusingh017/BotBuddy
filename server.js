@@ -4,35 +4,38 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// Load environment variables
 dotenv.config();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-console.log("GEMINI_API_KEY:", GEMINI_API_KEY);
+console.log("GEMINI_API_KEY:", GEMINI_API_KEY ? "Loaded" : "Missing");
 console.log("Current working directory:", process.cwd());
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+if (!GEMINI_API_KEY) {
+  console.error("❌ GEMINI_API_KEY is missing in environment variables.");
+  process.exit(1); // Exit the process if API key is missing
+}
 
-// These two lines are needed for __dirname in ES modules
+const app = express();
+
+// Middleware
+app.use(cors()); // Allow cross-origin requests
+app.use(express.json()); // Parse JSON requests
+
+// Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files from the root (adjust if needed)
+// Serve static files from the project root (so /html, /css, /assest work)
 app.use(express.static(path.join(__dirname, '..')));
 
-// Optionally, serve index.html for the root route
+// Serve login.html as the root page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../html/index.html'));
+  res.sendFile(path.join(__dirname, '../html/login.html'));
 });
 
-// Defensive: Warn if API key is missing
-if (!GEMINI_API_KEY) {
-  console.error("❌ GEMINI_API_KEY is missing in environment variables.");
-  process.exit(1);
-}
-
-// Helper to extract Gemini's reply
+// Extract Gemini API response content
 function extractBotReply(data) {
   try {
     return (
@@ -44,31 +47,34 @@ function extractBotReply(data) {
   }
 }
 
+// Chat API endpoint
 app.post('/api/chat', async (req, res) => {
-  const userMessage = req.body.message;
-  const userFile = req.body.file;
+  const { message, file } = req.body;
 
-  // Validate input
-  if (!userMessage || typeof userMessage !== 'string') {
+  // Validate user message
+  if (!message || typeof message !== 'string') {
     return res.status(400).json({ error: 'Invalid or missing message.' });
   }
-  if (userFile && (!userFile.data || !userFile.mime_type)) {
+
+  // Validate file if provided
+  if (file && (!file.data || !file.mime_type)) {
     return res.status(400).json({ error: 'Invalid file structure.' });
   }
 
   try {
-    // Prepare Gemini API request
-    const parts = [{ text: userMessage }];
-    if (userFile && userFile.data && userFile.mime_type) {
-      parts.push({ inline_data: userFile });
+    // Prepare Gemini API request body
+    const parts = [{ text: message }];
+    if (file?.data && file?.mime_type) {
+      parts.push({ inline_data: file });
     }
-    const body = { contents: [{ parts }] };
+    const requestBody = { contents: [{ parts }] };
 
+    // Send request to Gemini API
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+      body: JSON.stringify(requestBody),
     });
 
     const data = await geminiRes.json();
@@ -82,16 +88,17 @@ app.post('/api/chat', async (req, res) => {
 
     const botReply = extractBotReply(data);
     res.json({ generated_text: botReply });
-  } catch (err) {
-    console.error("Server error:", err);
-    res.status(500).json({ error: err.message || 'Internal Server Error.' });
+  } catch (error) {
+    console.error("Server error:", error);
+    res.status(500).json({ error: 'Internal Server Error.' });
   }
 });
 
-// Health check endpoint (optional)
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: "ok" });
 });
 
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
