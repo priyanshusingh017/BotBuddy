@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact - BotBuddy</title>
-  <link rel="stylesheet" href="/css/contact.css" />
+  <link rel="stylesheet" href="/css/contact.css">
 </head>
 <body>
   <header>
@@ -18,58 +18,10 @@
         <a href="/html/about.html">About</a>
         <a href="/html/contact.html" aria-current="page">Contact</a>
       </nav>
-
-      <button
-        class="dark-mode-toggle"
-        aria-label="Toggle dark mode"
-        title="Switch to dark mode"
-        type="button"
-      >
-        🌙
-      </button>
-
-      <img
-        src="/assets/user.png"
-        alt="User menu"
-        class="user-avatar-header"
-        id="user-avatar"
-        tabindex="0"
-        aria-haspopup="true"
-        aria-expanded="false"
-        role="button"
-      />
-      <div
-        class="user-menu"
-        id="user-menu"
-        style="
-          display: none;
-          position: absolute;
-          right: 20px;
-          top: 60px;
-          background: #fff;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          z-index: 1000;
-        "
-        role="menu"
-        aria-label="User menu"
-      >
-        <button
-          id="logout-btn"
-          style="
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-          "
-          type="button"
-          role="menuitem"
-        >
-          Logout
-        </button>
+      <button class="dark-mode-toggle" aria-label="Toggle dark mode" title="Switch to dark mode">🌙</button>
+      <img src="/assets/user.png" alt="User menu" class="user-avatar-header" id="user-avatar" tabindex="0" aria-haspopup="true" aria-expanded="false" />
+      <div class="user-menu" id="user-menu" style="display:none; position:absolute; right:20px; top:60px; background:#fff; border:1px solid #ccc; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000;">
+        <button id="logout-btn" style="background:none; border:none; padding:10px 20px; width:100%; text-align:left; cursor:pointer;">Logout</button>
       </div>
     </div>
   </header>
@@ -77,45 +29,30 @@
   <main>
     <section class="contact-section">
       <h1>Contact Us</h1>
-      <p>Have questions, feedback, or need support? Reach out to the BotBuddy team!</p>
+      <p>
+        Have questions, feedback, or need support? Reach out to the BotBuddy team!
+      </p>
       <form class="contact-form" autocomplete="off">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" required autocomplete="name" />
+        <input type="text" id="name" name="name" required autocomplete="name">
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autocomplete="email" />
+        <input type="email" id="email" name="email" required autocomplete="email">
 
         <label for="message">Message</label>
         <textarea id="message" name="message" rows="4" required></textarea>
 
-        <button
-          type="submit"
-          class="send-btn"
-          aria-label="Send your message"
-        >
-          Send Message
-        </button>
-
-        <div
-          id="form-success"
-          style="display: none; color: #43e97b; margin-top: 10px; text-align: center;"
-        >
+        <button type="submit" class="send-btn" aria-label="Send your message">Send Message</button>
+        <div id="form-success" style="display:none; color:#43e97b; margin-top:10px; text-align:center;">
           Thank you! Your message has been sent.
         </div>
       </form>
     </section>
   </main>
 
-  <footer
-    style="
-      text-align: center;
-      color: var(--secondary-text, #666);
-      padding: 1rem 0;
-    "
-  >
+  <footer style="text-align:center; color:var(--secondary-text); padding:1rem 0;">
     &copy; 2025 BotBuddy. All rights reserved.
   </footer>
-
   <script type="module" src="/js/contact.js"></script>
 </body>
 </html>

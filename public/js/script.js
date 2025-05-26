@@ -64,15 +64,12 @@ window.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   });
 
-  const Api_Url = '/api/chat';
+  const Api_Url = 'https://your-backend.onrender.com/api/chat';
 
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = userInput.value.trim();
-    if (!message) {
-      alert("Message cannot be empty!");
-      return;
-    }
+    if (!message) return;
 
     appendMessage('user', message, attachedFile);
 
@@ -92,8 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        const errorDetails = await response.json();
-        throw new Error(`HTTP ${response.status}: ${errorDetails.error || 'Unknown error'}`);
+        throw new Error(`HTTP error: ${response.status}`);
       }
 
       const data = await response.json();
@@ -101,7 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
       loadingDiv.querySelector('.message-text').innerHTML = formatReply(botReply);
     } catch (error) {
       loadingDiv.querySelector('.message-text').innerHTML = 'There was an error. Please try again.';
-      console.error('Error during fetch:', error);
+      console.error('Fetch error:', error);
     } finally {
       userInput.disabled = false;
       userInput.focus();

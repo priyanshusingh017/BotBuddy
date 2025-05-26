@@ -390,20 +390,22 @@ body.dark-mode .user-menu button#logout-btn:hover {
   }
   .chat-window {
     padding: 0 0.2rem 1rem 0.2rem;
+    gap: 1rem;
   }
-  .message-bubble {
-    max-width: 250px;
-    font-size: 0.9rem;
-  }
-  .user-avatar-header {
-    width: 32px;
-    height: 32px;
-  }
-  header {
-    padding: 0.5rem 1rem;
+  .input-container {
+    padding: 0.2rem 0.2rem;
   }
   .send-btn {
-    padding: 0.5rem 1rem;
+    width: 100%;
     font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 0.7rem;
+  }
+  .header-right {
+    gap: 0.7rem;
   }
 }

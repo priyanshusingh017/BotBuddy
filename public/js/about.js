@@ -1,74 +1,84 @@
-document.addEventListener('DOMContentLoaded', () => {
+const toggleDarkMode = () => {
   const body = document.body;
   const button = document.querySelector('.dark-mode-toggle');
-  const userAvatar = document.getElementById('user-avatar');
-  const userMenu = document.getElementById('user-menu');
-  const logoutBtn = document.getElementById('logout-btn');
+  body.classList.toggle('dark-mode');
 
-  if (!button) return;
-
-  // Initialize theme from localStorage
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
+  // Save preference
+  if (body.classList.contains('dark-mode')) {
+    localStorage.setItem('theme', 'dark');
     button.textContent = '☀️';
     button.title = 'Switch to light mode';
   } else {
-    body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+    button.textContent = '🌙';
+    button.title = 'Switch to dark mode';
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const button = document.querySelector('.dark-mode-toggle');
+  if (!button) return;
+
+  // Set theme on load from localStorage
+  const theme = localStorage.getItem('theme');
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+    button.textContent = '☀️';
+    button.title = 'Switch to light mode';
+  } else {
+    document.body.classList.remove('dark-mode');
     button.textContent = '🌙';
     button.title = 'Switch to dark mode';
   }
 
-  // Dark mode toggle handler
+  // Toggle theme on click
   button.addEventListener('click', () => {
-    const isDark = body.classList.toggle('dark-mode');
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     button.textContent = isDark ? '☀️' : '🌙';
     button.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
   });
 
-  // User menu toggle function
-  function toggleMenu(show) {
-    if (!userMenu || !userAvatar) return;
-    userMenu.style.display = show ? 'block' : 'none';
-    userAvatar.setAttribute('aria-expanded', show ? 'true' : 'false');
-  }
+  const userAvatar = document.getElementById('user-avatar');
+  const userMenu = document.getElementById('user-menu');
+  const logoutBtn = document.getElementById('logout-btn');
 
+  // Improved: Keyboard accessibility and robust toggle
   if (userAvatar && userMenu) {
-    // Initially hide menu
-    toggleMenu(false);
+    function toggleMenu(show) {
+      userMenu.style.display = show ? 'block' : 'none';
+      userAvatar.setAttribute('aria-expanded', show ? 'true' : 'false');
+    }
 
     userAvatar.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isHidden = userMenu.style.display === 'none' || userMenu.style.display === '';
-      toggleMenu(isHidden);
+      toggleMenu(userMenu.style.display === 'none' || userMenu.style.display === '');
     });
 
     userAvatar.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        const isHidden = userMenu.style.display === 'none' || userMenu.style.display === '';
-        toggleMenu(isHidden);
+        toggleMenu(userMenu.style.display === 'none' || userMenu.style.display === '');
       }
       if (e.key === 'Escape') {
         toggleMenu(false);
       }
     });
 
-    // Clicking outside closes menu
+    // Hide menu when clicking outside
     document.addEventListener('click', (e) => {
       if (!userMenu.contains(e.target) && e.target !== userAvatar) {
         toggleMenu(false);
       }
     });
 
-    // Prevent clicks inside menu from closing it
+    // Prevent menu from closing when clicking inside
     userMenu.addEventListener('click', (e) => {
       e.stopPropagation();
     });
   }
 
-  // Logout button handler
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       window.location.href = 'login.html?logout=1';

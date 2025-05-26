@@ -5,136 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About - BotBuddy</title>
   <link rel="stylesheet" href="/css/about.css">
-  <style>
-    /* Responsive styles */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 1.5rem;
-      background-color: var(--header-bg, #fff);
-      border-bottom: 1px solid var(--border, #ccc);
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo {
-      width: 24px;
-      height: 24px;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    nav {
-      display: flex;
-      gap: 1rem;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--text, #000);
-      font-size: 1rem;
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background-color: var(--text, #000);
-    }
-
-    .nav-dropdown {
-      display: none;
-      flex-direction: column;
-      background-color: var(--header-bg, #fff);
-      position: absolute;
-      right: 20px;
-      top: 60px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      border-radius: 6px;
-    }
-
-    .nav-dropdown a {
-      padding: 0.5rem 1rem;
-      text-align: left;
-    }
-
-    .chat-intro {
-      max-width: 750px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      text-align: center;
-    }
-
-    .chat-intro h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .chat-intro p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .chat-intro ul {
-      list-style-type: disc;
-      padding-left: 1.5rem;
-      text-align: left;
-      margin: 0 auto;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-    }
-
-    /* Mobile-specific styles */
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
-
-      .header-right {
-        position: relative;
-      }
-
-      .nav-dropdown {
-        display: flex;
-      }
-
-      .chat-intro {
-        margin: 1.5rem auto;
-        padding: 0 0.5rem;
-      }
-
-      .chat-intro h1 {
-        font-size: 1.5rem;
-      }
-
-      .chat-intro p {
-        font-size: 1rem;
-      }
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -143,25 +13,15 @@
       <span class="app-title">BotBuddy</span>
     </div>
     <div class="header-right">
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <nav aria-label="Main navigation" id="nav-menu">
+      <nav aria-label="Main navigation">
         <a href="/html/home.html">Home</a>
         <a href="/html/about.html" aria-current="page">About</a>
         <a href="/html/contact.html">Contact</a>
       </nav>
-      <div class="nav-dropdown" id="nav-dropdown">
-        <a href="/html/home.html">Home</a>
-        <a href="/html/about.html" aria-current="page">About</a>
-        <a href="/html/contact.html">Contact</a>
-      </div>
       <button class="dark-mode-toggle" aria-label="Toggle dark mode" title="Switch to dark mode">🌙</button>
       <img src="/assets/user.png" alt="User menu" class="user-avatar-header" id="user-avatar" tabindex="0" aria-haspopup="true" aria-expanded="false" />
-      <div class="user-menu" id="user-menu" style="display:none;">
-        <button id="logout-btn">Logout</button>
+      <div class="user-menu" id="user-menu" style="display:none; position:absolute; right:20px; top:60px; background:#fff; border:1px solid #ccc; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000;">
+        <button id="logout-btn" style="background:none; border:none; padding:10px 20px; width:100%; text-align:left; cursor:pointer;">Logout</button>
       </div>
     </div>
   </header>
@@ -184,14 +44,6 @@
   <footer>
     &copy; 2025 BotBuddy. All rights reserved.
   </footer>
-  <script>
-    // Mobile menu toggle
-    document.getElementById('hamburger').addEventListener('click', () => {
-      const navMenu = document.getElementById('nav-menu');
-      const navDropdown = document.getElementById('nav-dropdown');
-      const isOpen = navDropdown.style.display === 'flex';
-      navDropdown.style.display = isOpen ? 'none' : 'flex';
-    });
-  </script>
+  <script src="/js/about.js"></script>
 </body>
 </html>
