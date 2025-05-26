@@ -18,18 +18,27 @@ if (!GEMINI_API_KEY) {
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = ['http://localhost:3000', 'https://botbuddy-aadn.onrender.com'];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error(`Blocked by CORS: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
-app.use(express.json());
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'https://botbuddy-aadn.onrender.com',
+      ];
+      if (!origin || allowedOrigins.includes(origin) || origin === 'null') {
+        callback(null, true);
+      } else {
+        console.error(`Blocked by CORS: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
+
+// Increase JSON body size limit to support file uploads
+app.use(express.json({ limit: '5mb' }));
+
 app.use(morgan('dev'));
 
 // Resolve __dirname for ES modules
@@ -43,7 +52,7 @@ app.use('/html', express.static(path.join(__dirname, 'public/html')));
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 app.use('/favicon.ico', express.static(path.join(__dirname, 'public/assets/favicon.ico')));
 
-// Serve login.html as the root page
+// Serve login.html as root page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
 });
@@ -65,20 +74,26 @@ function extractBotReply(data) {
 app.post('/api/chat', async (req, res) => {
   const { message, file } = req.body;
 
-  // Validate message
   if (!message || typeof message !== 'string') {
     console.error('Invalid or missing message:', message);
-    return res.status(400).json({ error: 'Invalid or missing message.' });
+    return res.status(400).json({ success: false, error: 'Invalid or missing message.' });
   }
 
-  // Validate file (if provided)
-  if (file && (!file.data || !file.mime_type)) {
-    console.error('Invalid file structure:', file);
-    return res.status(400).json({ error: 'Invalid file structure.' });
+  if (file) {
+    // Basic validation for file object structure and size limit (~3MB here)
+    if (
+      !file.data ||
+      !file.mime_type ||
+      typeof file.data !== 'string' ||
+      typeof file.mime_type !== 'string' ||
+      Buffer.byteLength(file.data, 'base64') > 3 * 1024 * 1024
+    ) {
+      console.error('Invalid or too large file:', file);
+      return res.status(400).json({ success: false, error: 'Invalid or too large file.' });
+    }
   }
 
   try {
-    // Prepare request for Gemini API
     const parts = [{ text: message }];
     if (file?.data && file?.mime_type) {
       parts.push({ inline_data: file });
@@ -86,7 +101,7 @@ app.post('/api/chat', async (req, res) => {
     const requestBody = { contents: [{ parts }] };
 
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-    console.log('Sending request to Gemini API:', requestBody);
+    console.log('Sending request to Gemini API:', JSON.stringify(requestBody));
 
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
@@ -100,14 +115,17 @@ app.post('/api/chat', async (req, res) => {
 
     if (!geminiRes.ok) {
       console.error("Gemini API error:", data.error);
-      return res.status(500).json({ error: data.error?.message || 'Gemini API error.' });
+      return res.status(geminiRes.status).json({
+        success: false,
+        error: data.error?.message || 'Gemini API error.'
+      });
     }
 
     const botReply = extractBotReply(data);
-    res.json({ generated_text: botReply });
+    return res.json({ success: true, generated_text: botReply });
   } catch (error) {
     console.error("Server error:", error);
-    res.status(500).json({ error: 'Internal Server Error.' });
+    return res.status(500).json({ success: false, error: 'Internal Server Error.' });
   }
 });
 
@@ -116,12 +134,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: "ok" });
 });
 
-// Handle 404 errors
+// Handle 404 errors for API and frontend
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'public', 'html', '404.html'));
+  if (req.path.startsWith('/api/')) {
+    // API 404 JSON response
+    res.status(404).json({ success: false, error: 'API endpoint not found.' });
+  } else {
+    // Serve 404 HTML page for frontend routes
+    res.status(404).sendFile(path.join(__dirname, 'public', 'html', '404.html'));
+  }
 });
 
-// Start the server
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
