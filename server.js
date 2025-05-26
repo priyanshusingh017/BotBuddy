@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
@@ -25,6 +24,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error(`Blocked by CORS: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   }
@@ -65,15 +65,20 @@ function extractBotReply(data) {
 app.post('/api/chat', async (req, res) => {
   const { message, file } = req.body;
 
+  // Validate message
   if (!message || typeof message !== 'string') {
+    console.error('Invalid or missing message:', message);
     return res.status(400).json({ error: 'Invalid or missing message.' });
   }
 
+  // Validate file (if provided)
   if (file && (!file.data || !file.mime_type)) {
+    console.error('Invalid file structure:', file);
     return res.status(400).json({ error: 'Invalid file structure.' });
   }
 
   try {
+    // Prepare request for Gemini API
     const parts = [{ text: message }];
     if (file?.data && file?.mime_type) {
       parts.push({ inline_data: file });
@@ -81,6 +86,8 @@ app.post('/api/chat', async (req, res) => {
     const requestBody = { contents: [{ parts }] };
 
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    console.log('Sending request to Gemini API:', requestBody);
+
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -89,7 +96,7 @@ app.post('/api/chat', async (req, res) => {
 
     const data = await geminiRes.json();
     console.log("Gemini API status:", geminiRes.status);
-    console.log("Gemini API response:", JSON.stringify(data));
+    console.log("Gemini API response:", JSON.stringify(data, null, 2));
 
     if (!geminiRes.ok) {
       console.error("Gemini API error:", data.error);
