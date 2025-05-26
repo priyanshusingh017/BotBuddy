@@ -18,17 +18,19 @@ if (!GEMINI_API_KEY) {
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = ['http://localhost:3000', 'https://botbuddy-aadn.onrender.com'];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error(`Blocked by CORS: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowedOrigins = ['http://localhost:3000', 'https://botbuddy-aadn.onrender.com'];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.error(`Blocked by CORS: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -86,7 +88,7 @@ app.post('/api/chat', async (req, res) => {
     const requestBody = { contents: [{ parts }] };
 
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-    console.log('Sending request to Gemini API:', requestBody);
+    console.log('Sending request to Gemini API:', JSON.stringify(requestBody));
 
     const geminiRes = await fetch(geminiUrl, {
       method: 'POST',
@@ -100,7 +102,9 @@ app.post('/api/chat', async (req, res) => {
 
     if (!geminiRes.ok) {
       console.error("Gemini API error:", data.error);
-      return res.status(500).json({ error: data.error?.message || 'Gemini API error.' });
+      return res
+        .status(geminiRes.status)
+        .json({ error: data.error?.message || 'Gemini API error.' });
     }
 
     const botReply = extractBotReply(data);
