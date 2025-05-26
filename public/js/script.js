@@ -130,10 +130,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Add avatar image based on sender
     if (sender === 'user') {
-      html += `<img src="/assest/R.jpg" alt="User" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
+      html += `<img src="/public/asseset/R.jpg" alt="User avatar smiling with a friendly expression, neutral background, no visible text, positive and welcoming tone" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
       html += `<span class="message-text">${escapeHtml(text)}</span>`;
     } else if (sender === 'bot') {
-      html += `<img src="/assest/OIP.jpg" alt="Bot" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
+      html += `<img src="/public/assest/OIP.jpg" alt="Friendly chatbot avatar with a smiling face in a digital interface, neutral background, no visible text" class="avatar" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">`;
       html += `<span class="message-text"></span>`;
     }
 
