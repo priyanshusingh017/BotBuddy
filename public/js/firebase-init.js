@@ -1,7 +1,7 @@
-// Import the functions you need from Firebase SDK
+// Import Firebase SDK modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-// Import additional Firebase services as needed
-// import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,6 +13,12 @@ const firebaseConfig = {
   appId: "1:482784554176:web:b2a5d7ed8f802bdfc7d125",
 };
 
-// Initialize Firebase
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 console.log("Firebase initialized:", app.name);
+
+// Initialize Firebase Auth service (optional)
+const auth = getAuth(app);
+
+// Initialize Firestore database (optional)
+const db = getFirestore(app);

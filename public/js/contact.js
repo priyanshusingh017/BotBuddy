@@ -102,11 +102,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (!name || !email || !message) {
         if (successMsg) {
           successMsg.textContent = "Please fill in all fields.";
-          successMsg.style.color = "#e53935";
+          successMsg.style.color = "#e53935"; // red
           successMsg.style.display = 'block';
           setTimeout(() => {
             successMsg.style.display = 'none';
-            successMsg.style.color = "#43e97b";
+            successMsg.style.color = "#43e97b"; // reset to green
           }, 3000);
         }
         return;
@@ -122,7 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
         form.reset();
         if (successMsg) {
           successMsg.textContent = "Your message has been successfully stored!";
-          successMsg.style.color = "#43e97b";
+          successMsg.style.color = "#43e97b"; // green
           successMsg.style.display = 'block';
           setTimeout(() => {
             successMsg.style.display = 'none';
@@ -131,11 +131,11 @@ window.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         if (successMsg) {
           successMsg.textContent = "Failed to store message: " + error.message;
-          successMsg.style.color = "#e53935";
+          successMsg.style.color = "#e53935"; // red
           successMsg.style.display = 'block';
           setTimeout(() => {
             successMsg.style.display = 'none';
-            successMsg.style.color = "#43e97b";
+            successMsg.style.color = "#43e97b"; // reset to green
           }, 4000);
         } else {
           alert('Failed to store message: ' + error.message);

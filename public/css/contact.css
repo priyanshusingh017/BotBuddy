@@ -341,3 +341,16 @@ body.dark-mode .user-menu button#logout-btn:hover {
     padding: 0.8rem 0.7rem;
   }
 }
+
+/* Additional Improvements */
+
+/* Smooth transitions on key interactive elements */
+body, header, nav a, .dark-mode-toggle, .user-menu, .contact-form, .send-btn {
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus outline for user avatar for keyboard users */
+.user-avatar-header:focus {
+  outline: 3px solid var(--user-bubble-accent);
+  outline-offset: 3px;
+}

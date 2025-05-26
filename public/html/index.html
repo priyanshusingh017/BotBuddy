@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/style.css" />
   <title>BotBuddy</title>
 </head>
 <body>
@@ -18,10 +18,50 @@
         <a href="/html/about.html">About</a>
         <a href="/html/contact.html">Contact</a>
       </nav>
-      <button class="dark-mode-toggle" aria-label="Toggle dark mode" title="Switch to dark mode">🌙</button>
-      <img src="/assets/user.png" alt="User menu" class="user-avatar-header" id="user-avatar" tabindex="0" aria-haspopup="true" aria-expanded="false" />
-      <div class="user-menu" id="user-menu" style="display:none; position:absolute; right:20px; top:60px; background:#fff; border:1px solid #ccc; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:1000;">
-        <button id="logout-btn" style="background:none; border:none; padding:10px 20px; width:100%; text-align:left; cursor:pointer;">Logout</button>
+      <button
+        class="dark-mode-toggle"
+        aria-label="Toggle dark mode"
+        title="Switch to dark mode"
+      >
+        🌙
+      </button>
+      <img
+        src="/assets/user.png"
+        alt="User menu"
+        class="user-avatar-header"
+        id="user-avatar"
+        tabindex="0"
+        aria-haspopup="true"
+        aria-expanded="false"
+      />
+      <div
+        class="user-menu"
+        id="user-menu"
+        style="
+          display: none;
+          position: absolute;
+          right: 20px;
+          top: 60px;
+          background: #fff;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+        "
+      >
+        <button
+          id="logout-btn"
+          style="
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+          "
+        >
+          Logout
+        </button>
       </div>
     </div>
   </header>
@@ -29,7 +69,10 @@
   <main>
     <section class="chat-intro">
       <h1>Welcome to Your Personal BotBuddy</h1>
-      <p>Start a conversation with your personal BotBuddy. Ask anything from daily reminders to fun facts!</p>
+      <p>
+        Start a conversation with your personal BotBuddy. Ask anything from
+        daily reminders to fun facts!
+      </p>
     </section>
 
     <div class="chat-window" id="chat-window" aria-live="polite">
@@ -39,13 +82,28 @@
 
   <footer>
     <form class="input-container" id="chat-form" autocomplete="off">
-      <button type="button" class="attach-btn" title="Attach file" aria-label="Attach file">
+      <button
+        type="button"
+        class="attach-btn"
+        title="Attach file"
+        aria-label="Attach file"
+      >
         <span>📎</span>
       </button>
-      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required aria-label="Type your message">
-      <button type="submit" class="send-btn" aria-label="Send message">Send</button>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your message..."
+        autocomplete="off"
+        required
+        aria-label="Type your message"
+      />
+      <button type="submit" class="send-btn" aria-label="Send message">
+        Send
+      </button>
     </form>
   </footer>
+
   <script src="/js/script.js"></script>
 </body>
 </html>
