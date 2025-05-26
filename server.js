@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve login.html as the root page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/html/login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'html', 'login.html'));
 });
 
 // Extract Gemini API response content
@@ -43,6 +43,7 @@ function extractBotReply(data) {
       "Sorry, I didn't understand that."
     );
   } catch (e) {
+    console.error("Error extracting bot reply:", e);
     return "Sorry, I couldn't process that.";
   }
 }
@@ -101,4 +102,7 @@ app.get('/api/health', (req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`🌐 Access the app at http://localhost:${PORT}/`);
+});
